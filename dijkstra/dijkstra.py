@@ -71,7 +71,8 @@ def dijkstra(graph_dict, start, end):
         path.append(predecessors[path[-1]])
     
     # return the path in order start -> end, and it's cost
-    return path[::-1], distances[end]
+    #return path[::-1], distances[end]
+    return distances[end]
 
 # %%
 # function to get _all_ dijkstra shortest paths
@@ -86,7 +87,7 @@ def dijkstra_all(graph_dict):
        
 #%% read in data - use a pandas dataframe just for convenience
 import pandas as pd
-data = pd.read_table("../../data/melbourne_graph.txt",
+data = pd.read_table("~/Desktop/Project/data/melbourne_graph.txt",
                      sep = " ",
                      header = None, 
                      names = ['vx', 'vy', 'weight'])
@@ -94,13 +95,19 @@ data = pd.read_table("../../data/melbourne_graph.txt",
 # %% use network x to prepare dictionary structure which can be fed in to the 
 # dijkstra function
 import networkx as nx
-graph = nx.from_pandas_dataframe(data, 'vx', 'vy', 'weight')
+graph = nx.from_pandas_edgelist(data, 'vx', 'vy', 'weight')
 # graph_nodes = graph.nodes()
 graph_dict = nx.to_dict_of_dicts(graph)
-
+G = nx.Graph(graph_dict)
 # %% run the functions
-
-path = dijkstra(graph_dict, 1, 6)
-all_paths = dijkstra_all(graph_dict)
-            
-        
+print graph_dict
+#all_paths = dijkstra_all(graph_dict)
+result = []
+length = dict(nx.all_pairs_dijkstra_path_length(G))
+#length = nx.single_source_dijkstra_path_length(G, 0)
+print "start compute length"
+with open('distance.txt','w') as f:
+    for i in graph_dict.keys():
+        for j in graph_dict.key():
+            f.write(str(i)+" "+str(j)+" "+str(length[i][j]))
+                
