@@ -103,11 +103,12 @@ G = nx.Graph(graph_dict)
 print graph_dict
 #all_paths = dijkstra_all(graph_dict)
 result = []
-length = dict(nx.all_pairs_dijkstra_path_length(G))
-#length = nx.single_source_dijkstra_path_length(G, 0)
+#length = dict(nx.all_pairs_dijkstra_path_length(G))
+length = nx.single_source_dijkstra_path_length(G, 0)
 print "start compute length"
 with open('distance.txt','w') as f:
     for i in graph_dict.keys():
-        for j in graph_dict.key():
-            f.write(str(i)+" "+str(j)+" "+str(length[i][j]))
+        length = nx.single_source_dijkstra_path_length(G, i)
+        for j in graph_dict.keys():
+            f.write(str(i)+" "+str(j)+" "+str(length[j]))
                 
